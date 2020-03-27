@@ -1,0 +1,21 @@
+<library path="lib/libkd45_controller">
+
+    <class name="kd45_position_controller/KD45TrajectorySimController"
+           type="kd45_position_controller::KD45TrajectorySimController"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+            A JointTrajectoryController extension that modifies execution of individual finger trajectories based on
+            tactile sensor readings and relative finger positions.
+        </description>
+    </class>
+
+    <class name="kd45_position_controller/KD45TrajectoryRealController"
+           type="kd45_position_controller::KD45TrajectoryRealController"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+            A JointTrajectoryController extension that modifies execution of individual finger trajectories based on
+            tactile sensor readings and relative finger positions. Reads KD45 tactile data.
+        </description>
+    </class>
+
+</library>
