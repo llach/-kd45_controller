@@ -49,7 +49,7 @@ namespace kd45_controller {
 template <class TactileSensors>
 inline bool KD45TrajectoryController<TactileSensors>::init(hardware_interface::PositionJointInterface* hw,
                                                            ros::NodeHandle& root_nh, ros::NodeHandle& controller_nh) {
-    ROS_INFO("Initializing KD45TrajectoryController.")
+    ROS_INFO("Initializing KD45TrajectoryController.");
 	bool ret = JointTrajectoryController::init(hw, root_nh, controller_nh);
 	return ret;
 }
