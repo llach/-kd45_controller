@@ -39,29 +39,35 @@
 #define KD45_CONTROLLER_TACTILE_SENSOR_H
 
 #include <kd45_controller.h>
-
+#include <tactile_msgs/TactileState.h>
 
 namespace kd45_controller {
-class TactileSensorSim
-{
+class TactileSensorBase {
 public:
-    TactileSensorSim(ros::NodeHandle& root_nh);
-    void update();
-    bool sim = true;
+    TactileSensorBase(ros::NodeHandle& root_nh, std::shared_ptr<std::vector<float>> forces, bool simulation);
+    virtual void update() {};
 
+    bool sim = false;
 protected:
     ros::NodeHandle& nh_;
+    std::shared_ptr<std::vector<float>> forces_;
 };
 
-class TactileSensorReal
+// listens to topic for simulation use
+class TactileSensorSim : public TactileSensorBase
 {
 public:
-	TactileSensorReal(ros::NodeHandle& root_nh);
-	void update();
-    bool sim = false;
+    TactileSensorSim(ros::NodeHandle& root_nh, std::shared_ptr<std::vector<float>> forces);
+private:
+    ros::Subscriber sub_;
+    void sensor_cb_(const tactile_msgs::TactileStateConstPtr tactile_state);
+};
 
-protected:
-    ros::NodeHandle& nh_;
+// reads from real sensors
+class TactileSensorReal : public TactileSensorBase
+{
+public:
+	TactileSensorReal(ros::NodeHandle& root_nh, std::shared_ptr<std::vector<float>> forces);
 };
 }
 

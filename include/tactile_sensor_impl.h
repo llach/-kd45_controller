@@ -36,16 +36,24 @@
 */
 
 #ifndef KD45_CONTROLLER_TACTILE_SENSOR_IMPL_H
-#define KD45_CONTROLLER_T
 
 #include <tactile_sensor.h>
 
 namespace kd45_controller {
-TactileSensorSim::TactileSensorSim(ros::NodeHandle& nh) : nh_(nh) {}
-void TactileSensorSim::update() {}
+TactileSensorBase::TactileSensorBase(ros::NodeHandle& nh, std::shared_ptr<std::vector<float>> forces, bool simulation) : nh_(nh), forces_(forces), sim(simulation){}
 
-TactileSensorReal::TactileSensorReal(ros::NodeHandle& nh) : nh_(nh) {}
-void TactileSensorReal::update() {}
+TactileSensorSim::TactileSensorSim(ros::NodeHandle& nh, std::shared_ptr<std::vector<float>> forces) : TactileSensorBase(nh, forces, true) {
+    sub_ = nh.subscribe("/kd45_tactile", 0, &TactileSensorSim::sensor_cb_, this);
+    ROS_INFO("Registered subscriber for \"/kd45_tactile\"");
+}
+
+void TactileSensorSim::sensor_cb_(const tactile_msgs::TactileStateConstPtr ts) {
+    for (int i = 0; i < forces_->size(); i++){ // lock here?
+        (*forces_)[i] = ts->sensors[i].values[0];
+    }
+}
+
+    TactileSensorReal::TactileSensorReal(ros::NodeHandle& nh, std::shared_ptr<std::vector<float>> forces) : TactileSensorBase(nh, forces, false) {}
 }
 
 #endif  // KD45_CONTROLLER_TACTILE_SENSOR_IMPL_H

@@ -55,6 +55,14 @@ class KD45TrajectoryController
 
 	void goalCB(GoalHandle gh) override;
 	void update(const ros::Time& time, const ros::Duration& period) override;
+
+protected:
+    typedef std::shared_ptr<TactileSensors> TactileSensorsPtr;
+
+    std::shared_ptr<std::vector<float>> forces_;
+    TactileSensorsPtr sensors_;
+
+    std::string name_ = "KD45C";
 };
 }
 
