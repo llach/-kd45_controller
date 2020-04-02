@@ -44,7 +44,7 @@ TactileSensorBase::TactileSensorBase(ros::NodeHandle& nh, std::shared_ptr<std::v
 
 TactileSensorSim::TactileSensorSim(ros::NodeHandle& nh, std::shared_ptr<std::vector<float>> forces) : TactileSensorBase(nh, forces, true) {
     sub_ = nh.subscribe("/kd45_tactile", 0, &TactileSensorSim::sensor_cb_, this);
-    ROS_INFO("Registered subscriber for \"/kd45_tactile\"");
+    ROS_INFO_STREAM("Registered subscriber for \"/kd45_tactile\"");
 }
 
 void TactileSensorSim::sensor_cb_(const tactile_msgs::TactileStateConstPtr ts) {

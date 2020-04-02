@@ -49,7 +49,7 @@ namespace kd45_controller {
 template <class TactileSensors>
 inline bool KD45TrajectoryController<TactileSensors>::init(hardware_interface::PositionJointInterface* hw,
                                                            ros::NodeHandle& root_nh, ros::NodeHandle& controller_nh) {
-    ROS_INFO("Initializing KD45TrajectoryController.");
+    ROS_INFO_NAMED(name_, "Initializing KD45TrajectoryController.");
     forces_= std::make_shared<std::vector<float>>(2, 0.0);
     sensors_ = std::make_shared<TactileSensors>(root_nh, forces_);
 
@@ -122,6 +122,7 @@ inline void KD45TrajectoryController<TactileSensors>::goalCB(GoalHandle gh) {
 
 template <class TactileSensors>
 inline void KD45TrajectoryController<TactileSensors>::update(const ros::Time& time, const ros::Duration& period) {
+    ROS_DEBUG_STREAM_NAMED(name_ + ".forces", "Forces: [" << (*forces_)[0] << ", " << (*forces_)[1] << "]");
 
 	realtime_busy_ = true;
 	// Get currently followed trajectory
